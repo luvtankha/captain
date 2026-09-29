@@ -1,0 +1,214 @@
+{
+  "scope": "Real unpacked Edge InPrivate panel-popup-MV3 service worker, local synthetic fixture, local real companion; not release acceptance",
+  "extensionId": "mdimbjeanhagcmpcdpdgjjjbeibflkob",
+  "host": "127.0.0.1",
+  "modelConfidenceThreshold": 0.75,
+  "realSplitIncognitoController": true,
+  "outcomes": [
+    {
+      "kind": "one-step",
+      "completed": true,
+      "status": "complete",
+      "completionStatus": "COMPLETED",
+      "steps": 1,
+      "elapsedMs": 3458,
+      "piiCount": 8,
+      "plannerRequests": 1,
+      "plannerStatuses": [
+        200
+      ],
+      "plannerActions": [
+        "finish"
+      ],
+      "outbound": [
+        {
+          "contract": "accepted",
+          "privateTextLeaked": false,
+          "hasLocalIdentity": false,
+          "hasModelOnlyCoordinates": false,
+          "hasVerifiedV2": true,
+          "jpegDigestOK": true,
+          "maskCount": 1,
+          "outputBytes": 3111,
+          "captureMs": 21,
+          "localVisionAndRedactionMs": 2418
+        }
+      ],
+      "imageCoverage": [
+        {
+          "width": 774,
+          "height": 507,
+          "examinedPixels": 392418,
+          "nonOpaquePixelCount": 0
+        }
+      ],
+      "taskTimelineTypes": [
+        "TASK_STARTED",
+        "SCREEN_CAPTURED",
+        "PAGE_READY",
+        "DOM_EXTRACTION",
+        "ACCESSIBILITY_EXTRACTION",
+        "AMAZON_EXTRACTION",
+        "PRIVACY_SCAN",
+        "SCREEN_CAPTURE",
+        "LOCAL_VISION_REDACTION",
+        "PERCEPTION_TOTAL",
+        "OCR",
+        "PERCEPTION_COMPLETE",
+        "PRIVACY_SCAN_COMPLETE",
+        "SANITIZATION_PAYLOAD",
+        "REQUEST_SENT",
+        "NETWORK_AND_SERVER",
+        "SERVER_RECEIVE_PARSE",
+        "SERVER_PRIVACY_BOUNDARY",
+        "PLANNER",
+        "PLAN_RECEIVED",
+        "ACTION_STARTED",
+        "ACTION_COMPLETED",
+        "TASK_COMPLETED"
+      ]
+    },
+    {
+      "kind": "two-step-scroll",
+      "completed": true,
+      "status": "complete",
+      "completionStatus": "COMPLETED",
+      "steps": 2,
+      "elapsedMs": 5495,
+      "piiCount": 8,
+      "plannerRequests": 2,
+      "plannerStatuses": [
+        200,
+        200
+      ],
+      "plannerActions": [
+        "scroll",
+        "finish"
+      ],
+      "outbound": [
+        {
+          "contract": "accepted",
+          "privateTextLeaked": false,
+          "hasLocalIdentity": false,
+          "hasModelOnlyCoordinates": false,
+          "hasVerifiedV2": true,
+          "jpegDigestOK": true,
+          "maskCount": 1,
+          "outputBytes": 3111,
+          "captureMs": 14,
+          "localVisionAndRedactionMs": 2513
+        },
+        {
+          "contract": "accepted",
+          "privateTextLeaked": false,
+          "hasLocalIdentity": false,
+          "hasModelOnlyCoordinates": false,
+          "hasVerifiedV2": true,
+          "jpegDigestOK": true,
+          "maskCount": 1,
+          "outputBytes": 3111,
+          "captureMs": 12,
+          "localVisionAndRedactionMs": 1333
+        }
+      ],
+      "imageCoverage": [
+        {
+          "width": 774,
+          "height": 507,
+          "examinedPixels": 392418,
+          "nonOpaquePixelCount": 0
+        },
+        {
+          "width": 774,
+          "height": 507,
+          "examinedPixels": 392418,
+          "nonOpaquePixelCount": 0
+        }
+      ],
+      "taskTimelineTypes": [
+        "TASK_STARTED",
+        "SCREEN_CAPTURED",
+        "PAGE_READY",
+        "DOM_EXTRACTION",
+        "ACCESSIBILITY_EXTRACTION",
+        "AMAZON_EXTRACTION",
+        "PRIVACY_SCAN",
+        "SCREEN_CAPTURE",
+        "LOCAL_VISION_REDACTION",
+        "PERCEPTION_TOTAL",
+        "OCR",
+        "PERCEPTION_COMPLETE",
+        "PRIVACY_SCAN_COMPLETE",
+        "SANITIZATION_PAYLOAD",
+        "REQUEST_SENT",
+        "NETWORK_AND_SERVER",
+        "SERVER_RECEIVE_PARSE",
+        "SERVER_PRIVACY_BOUNDARY",
+        "PLANNER",
+        "PLAN_RECEIVED",
+        "ACTION_STARTED",
+        "ACTION_COMPLETED",
+        "PAGE_STABLE_WAIT",
+        "SCREEN_CAPTURED",
+        "PAGE_READY",
+        "DOM_EXTRACTION",
+        "ACCESSIBILITY_EXTRACTION",
+        "AMAZON_EXTRACTION",
+        "PRIVACY_SCAN",
+        "SCREEN_CAPTURE",
+        "LOCAL_VISION_REDACTION",
+        "PERCEPTION_TOTAL",
+        "OCR",
+        "PERCEPTION_COMPLETE",
+        "PRIVACY_SCAN_COMPLETE",
+        "SANITIZATION_PAYLOAD",
+        "REQUEST_SENT",
+        "NETWORK_AND_SERVER",
+        "SERVER_RECEIVE_PARSE",
+        "SERVER_PRIVACY_BOUNDARY",
+        "PLANNER",
+        "PLAN_RECEIVED",
+        "ACTION_STARTED",
+        "ACTION_COMPLETED",
+        "TASK_COMPLETED"
+      ]
+    },
+    {
+      "kind": "stale-document-negative",
+      "completed": true,
+      "status": "error",
+      "completionStatus": "FAILED",
+      "steps": 0,
+      "elapsedMs": 1394,
+      "piiCount": 0,
+      "plannerRequests": 0,
+      "plannerStatuses": [],
+      "plannerActions": [],
+      "outbound": [],
+      "imageCoverage": [],
+      "taskTimelineTypes": [
+        "TASK_STARTED",
+        "SCREEN_CAPTURED",
+        "TASK_FAILED"
+      ]
+    }
+  ],
+  "ordinaryProfileDenied": {
+    "dispatched": true,
+    "status": "error",
+    "blockedForIncognito": true,
+    "plannerRequests": 0
+  },
+  "realContentScriptActionGuards": {
+    "controlFound": true,
+    "unguardedBlocked": true,
+    "staleBlocked": true,
+    "genericGuardError": true
+  },
+  "caveats": [
+    "Synthetic localhost only",
+    "Image pixel readback is decoded JPEG; real-world PII recall unmeasured",
+    "Power, real browser memory, full site coverage and live Firefox unmeasured",
+    "No real account, external planner, real-world consequential action or Phase 07 used"
+  ]
+}

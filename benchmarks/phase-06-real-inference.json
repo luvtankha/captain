@@ -1,0 +1,17 @@
+{
+  "task": "real-on-device-ui-model-inference",
+  "input": "generated 640x640 non-personal UI raster",
+  "backend": "onnxruntime-web WASM / CPU single thread",
+  "quantization": "upstream FP32 ONNX; none",
+  "sha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+  "bytes": 7481347,
+  "iterations": 5,
+  "actualModelRuns": 6,
+  "firstRunMs": 455,
+  "p50Ms": 194,
+  "p95Ms": 198,
+  "peakRssMiB": 163,
+  "detections": 0,
+  "boxes": [],
+  "scope": "Windows Node-hosted extension adapter; synthetic raster, not a browser/CSP or real-world accuracy measurement"
+}

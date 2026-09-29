@@ -1,0 +1,13 @@
+{
+  "title": "Synthetic sign-in accessibility fixture",
+  "nodes": [
+    { "id": "loginForm", "tag": "form", "attrs": { "aria-label": "Demo sign-in form" }, "text": "Demo sign-in", "box": [20, 40, 410, 340] },
+    { "id": "emailLabel", "parent": "loginForm", "tag": "label", "attrs": { "for": "email" }, "text": "Email address", "box": [35, 70, 140, 24] },
+    { "id": "email", "parent": "loginForm", "tag": "input", "attrs": { "type": "email", "name": "email", "autocomplete": "username", "placeholder": "Work email" }, "value": "synthetic@example.test", "box": [35, 98, 280, 38] },
+    { "id": "passwordLabel", "parent": "loginForm", "tag": "label", "attrs": { "for": "password" }, "text": "Password", "box": [35, 148, 120, 24] },
+    { "id": "password", "parent": "loginForm", "tag": "input", "attrs": { "type": "password", "name": "password", "autocomplete": "current-password" }, "value": "SYNTHETIC_PASSWORD_NEVER_EGRESS", "box": [35, 180, 280, 38] },
+    { "id": "otp", "parent": "loginForm", "tag": "input", "attrs": { "type": "text", "name": "one_time_code", "autocomplete": "one-time-code", "aria-label": "One-time code" }, "value": "SYNTHETIC_OTP_NEVER_EGRESS", "box": [35, 230, 280, 38] },
+    { "id": "submit", "parent": "loginForm", "tag": "button", "attrs": { "type": "submit", "aria-label": "Sign in" }, "text": "Sign in", "box": [35, 285, 132, 40] }
+  ],
+  "annotations": { "sensitive": ["password", "otp"], "labels": { "email": "Email address", "password": "Password" }, "noRemoteValues": ["SYNTHETIC_PASSWORD_NEVER_EGRESS", "SYNTHETIC_OTP_NEVER_EGRESS"] }
+}

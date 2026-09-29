@@ -1,0 +1,55 @@
+{
+  "name": "captain",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "Privacy-first text browser agent built on UI-TARS concepts",
+  "scripts": {
+    "start": "node tools/start-server.mjs",
+    "demo": "node tools/start-demo.mjs",
+    "reload": "node tools/start-demo.mjs --reload",
+    "diagnose": "node tools/diagnose-controller.mjs",
+    "test:e2e": "node tools/e2e-demo.mjs",
+    "test:playback": "node tools/audit-playback.mjs",
+    "test:request": "node tools/audit-request.mjs",
+    "test:panel": "node tools/audit-panel.mjs",
+    "test:text-panel": "node tools/audit-text-panel.mjs",
+    "test:websites": "node tools/audit-live-flow.mjs",
+    "test:coverage": "node tools/audit-live-flow.mjs --coverage",
+    "probe:live-lease": "node tools/probe-live-lease.mjs",
+    "test:visual-privacy": "node tools/audit-visual-privacy.mjs",
+    "test:shopping": "node tools/audit-shopping.mjs",
+    "test:amazon": "node tools/audit-amazon.mjs",
+    "benchmark:amazon-latency": "node tools/benchmark-amazon-latency.mjs 5",
+    "test:privacy-attack": "node --test tests/privacy-attack.test.mjs",
+    "test:acceptance": "node tools/acceptance.mjs",
+    "test:handoff": "node tools/audit-handoff.mjs",
+    "test:vlm": "node tools/audit-vlm.mjs",
+    "benchmark": "node tools/benchmark.mjs",
+    "benchmark:phase8": "node tools/phase-08-evaluate.mjs",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node --check server/index.mjs && node --check extension/service-worker.js && node --check extension/content-script.js && tsc -p tsconfig.json --noEmit",
+    "package": "npm run package:extension",
+    "release:phase9": "node tools/package-phase-09.mjs",
+    "dev": "node --watch server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check server/index.mjs && node --check extension/service-worker.js && node --check extension/content-script.js && npm test",
+    "package:extension": "node tools/package.mjs",
+    "test:firefox-static": "npm run package:extension && node tools/check-firefox.mjs",
+    "test:firefox": "npm run test:firefox-static"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@tesseract.js-data/eng": "1.0.0",
+    "onnxruntime-web": "1.30.0",
+    "tesseract.js": "6.0.1",
+    "tesseract.js-core": "6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "CAPTAIN — Private Browser Agent",
+  "version": "0.5.0",
+  "description": "Text-command browser automation with local perception and PII redaction.",
+  "permissions": ["activeTab", "tabs", "storage", "scripting", "debugger", "offscreen"],
+  "host_permissions": ["http://127.0.0.1:4317/*", "http://localhost:4317/*", "<all_urls>"],
+  "background": { "service_worker": "action-binding-entry.js", "type": "module" },
+  "content_security_policy": { "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'" },
+  "action": { "default_popup": "popup.html", "default_title": "CAPTAIN" },
+  "options_page": "options.html",
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["privacy/privacy-core.js", "content-script.js"], "run_at": "document_idle" }]
+}

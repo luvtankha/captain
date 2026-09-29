@@ -1,0 +1,45 @@
+# CAPTAIN Phase-06 optional local UI-element detector — provenance and obligations
+
+Installed checkpoint: `model.onnx`, 7,481,347 bytes, SHA-256
+`d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9`.
+The immutable upstream Hugging Face model revision is
+`arthors/carwin-element-detection@2d7d9e6b6e189c27b22601e206c1474e8c8e928f`.
+Upstream LFS metadata also lists that exact digest and size. The local
+`SOURCE-CARD.md` is its unchanged, revision-pinned README. The image model is
+YOLOv5n, a one-class interactive desktop UI element detector, 640x640 RGB
+input; output is three FP32 heads of shape [1,19200,6], [1,4800,6],
+[1,1200,6]. The original ONNX opset-12 export is used unchanged: **FP32,
+not quantized**, no unverified conversion, pickle or TorchScript executed.
+
+**License limitation:** the model card declares MIT but explicitly discloses
+fine-tuning from Ultralytics `yolov5n.pt` and Ultralytics training code. The
+Ultralytics YOLOv5 project and pretrained models are released under AGPL-3.0
+or a separately purchased Enterprise license. The model card alone does not
+establish an AGPL-free MIT relicensing right for the derivative weight. CAPTAIN
+therefore treats this optional model conservatively as **AGPL-3.0 subject to
+upstream obligations**, preserving full standard text in
+`YOLOV5-AGPL-3.0-LICENSE.txt` and the source card. Its model/license status
+must be reviewed before proprietary/commercial distribution; do not remove
+AGPL notices or assert this model is MIT-only. No enterprise purchase needed
+for an AGPL-compliant open-source research prototype; no paid API is used.
+
+References:
+- https://huggingface.co/arthors/carwin-element-detection/tree/2d7d9e6b6e189c27b22601e206c1474e8c8e928f
+- https://docs.ultralytics.com/models/yolov5/
+- https://www.ultralytics.com/license
+- https://github.com/ultralytics/yolov5/blob/master/LICENSE
+
+CAPTAIN's `ui-model.js` uses the already-pinned extension-local
+`onnxruntime-web@1.30.0` WASM backend, hashes the fetched local file BEFORE
+session creation, performs 640-square letterboxing/normalization, decodes
+three heads, applies confidence >=0.75 and IoU NMS, and returns only boxes
+and scores to the local `ui-fusion.js` lease/DOM gate. It does not create refs,
+clicks, text, selectors, OCR strings or embeddings, nor use a remote endpoint.
+Uncertain, model-only, unmatched, stale, missing, corrupt and timed-out output
+conservatively blacks out the screenshot. The original face/OCR/privacy,
+encoded-JPEG readback/v2 proof and local guarded executor remain mandatory.
+
+Windows Node-hosted WASM inference on a generated raster is real model
+execution but is NOT proof of a production browser CSP, real-browser accuracy,
+complete PII recall or independently labelled evaluation. See the current
+Phase-06 report and reproducible benchmark for exact measured evidence.

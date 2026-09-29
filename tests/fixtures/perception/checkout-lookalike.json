@@ -1,0 +1,13 @@
+{
+  "title": "Synthetic checkout lookalike: inspection only, no purchase",
+  "nodes": [
+    { "id": "reviewForm", "tag": "form", "attrs": { "aria-label": "Review example order" }, "text": "Sample order: review only. No transaction exists.", "box": [20, 30, 450, 420] },
+    { "id": "address", "parent": "reviewForm", "tag": "textarea", "attrs": { "name": "shipping_address", "aria-label": "Shipping address" }, "value": "SYNTHETIC_ADDRESS_NEVER_EGRESS", "box": [35, 70, 280, 70] },
+    { "id": "card", "parent": "reviewForm", "tag": "input", "attrs": { "type": "text", "name": "cc-number", "autocomplete": "cc-number", "aria-label": "Card number" }, "value": "SYNTHETIC_CARD_NEVER_EGRESS", "box": [35, 160, 280, 40] },
+    { "id": "cvv", "parent": "reviewForm", "tag": "input", "attrs": { "name": "cvv", "aria-label": "Security code" }, "value": "SYNTHETIC_CVV_NEVER_EGRESS", "box": [35, 220, 130, 40] },
+    { "id": "hidden", "parent": "reviewForm", "tag": "input", "attrs": { "type": "hidden", "name": "csrf_token" }, "value": "SYNTHETIC_HIDDEN_NEVER_EGRESS", "box": [0, 0, 0, 0] },
+    { "id": "review", "parent": "reviewForm", "tag": "button", "attrs": { "type": "button", "aria-label": "Review only" }, "text": "Review only", "box": [35, 310, 150, 40] },
+    { "id": "payDisabled", "parent": "reviewForm", "tag": "button", "attrs": { "type": "submit", "disabled": "", "aria-label": "Pay now" }, "text": "Pay now", "box": [200, 310, 150, 40] }
+  ],
+  "annotations": { "sensitive": ["address", "card", "cvv"], "hidden": ["hidden"], "disabled": ["payDisabled"], "noPurchase": true, "noRemoteValues": ["SYNTHETIC_ADDRESS_NEVER_EGRESS", "SYNTHETIC_CARD_NEVER_EGRESS", "SYNTHETIC_CVV_NEVER_EGRESS", "SYNTHETIC_HIDDEN_NEVER_EGRESS"] }
+}

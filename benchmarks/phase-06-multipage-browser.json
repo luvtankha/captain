@@ -1,0 +1,90 @@
+{
+  "browser": "actual Edge unpacked extension, four generated synthetic pages; not real-world representative",
+  "confidenceThreshold": 0.75,
+  "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+  "fixtures": [
+    {
+      "name": "light-form",
+      "groundTruth": 8,
+      "modelOK": true,
+      "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+      "predictions": 0,
+      "truePositive": 0,
+      "falsePositive": 0,
+      "falseNegative": 8,
+      "recall": 0,
+      "maxScore": 0.6939506186926749,
+      "modelElapsedMs": 381.79999999701977,
+      "fusion": {
+        "fullBlackout": true,
+        "maskCount": 0,
+        "matchCount": 0
+      },
+      "scope": "single fixture, local synthetic DOM boxes, IoU>=0.5 and confidence>=0.75"
+    },
+    {
+      "name": "dark-dashboard",
+      "groundTruth": 8,
+      "modelOK": true,
+      "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+      "predictions": 0,
+      "truePositive": 0,
+      "falsePositive": 0,
+      "falseNegative": 8,
+      "recall": 0,
+      "maxScore": 0.6985344980951425,
+      "modelElapsedMs": 378.69999999925494,
+      "fusion": {
+        "fullBlackout": true,
+        "maskCount": 0,
+        "matchCount": 0
+      },
+      "scope": "single fixture, local synthetic DOM boxes, IoU>=0.5 and confidence>=0.75"
+    },
+    {
+      "name": "compact-table",
+      "groundTruth": 9,
+      "modelOK": true,
+      "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+      "predictions": 3,
+      "truePositive": 3,
+      "falsePositive": 0,
+      "falseNegative": 6,
+      "recall": 0.3333333333333333,
+      "maxScore": 0.8134232215854098,
+      "modelElapsedMs": 383.80000000074506,
+      "fusion": {
+        "fullBlackout": false,
+        "maskCount": 0,
+        "matchCount": 3
+      },
+      "scope": "single fixture, local synthetic DOM boxes, IoU>=0.5 and confidence>=0.75"
+    },
+    {
+      "name": "large-login",
+      "groundTruth": 4,
+      "modelOK": true,
+      "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+      "predictions": 0,
+      "truePositive": 0,
+      "falsePositive": 0,
+      "falseNegative": 4,
+      "recall": 0,
+      "maxScore": 0.6264413345932098,
+      "modelElapsedMs": 376,
+      "fusion": {
+        "fullBlackout": true,
+        "maskCount": 0,
+        "matchCount": 0
+      },
+      "scope": "single fixture, local synthetic DOM boxes, IoU>=0.5 and confidence>=0.75"
+    }
+  ],
+  "aggregate": {
+    "groundTruth": 29,
+    "truePositive": 3,
+    "falsePositive": 0,
+    "falseNegative": 26,
+    "recall": 0.10344827586206896
+  }
+}

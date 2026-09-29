@@ -1,0 +1,13 @@
+{
+  "title": "Synthetic public data table",
+  "nodes": [
+    { "id": "table", "tag": "table", "attrs": { "aria-label": "Public schedule" }, "text": "Public schedule", "box": [15, 20, 500, 240] },
+    { "id": "head", "parent": "table", "tag": "th", "attrs": { "scope": "col" }, "text": "Session", "box": [20, 40, 130, 30] },
+    { "id": "cell", "parent": "table", "tag": "td", "text": "Workshop at 10:00", "box": [20, 90, 220, 34] },
+    { "id": "open", "parent": "table", "tag": "a", "attrs": { "href": "https://events.example.test/public" }, "text": "View session", "box": [260, 90, 110, 34] },
+    { "id": "notesLabel", "tag": "label", "text": "Public notes", "box": [20, 267, 140, 24] },
+    { "id": "edit", "tag": "div", "attrs": { "role": "textbox", "contenteditable": "true", "aria-labelledby": "notesLabel" }, "text": "Public draft", "box": [20, 300, 240, 40] },
+    { "id": "toggle", "tag": "div", "attrs": { "role": "button", "aria-label": "Expand schedule", "aria-expanded": "false", "tabindex": "0" }, "text": "Expand", "box": [275, 300, 120, 40] }
+  ],
+  "annotations": { "tableText": ["Session", "Workshop at 10:00"], "interactive": ["open", "edit", "toggle"] }
+}

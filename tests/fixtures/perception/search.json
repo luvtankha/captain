@@ -1,0 +1,11 @@
+{
+  "title": "Synthetic public search fixture",
+  "nodes": [
+    { "id": "searchForm", "tag": "form", "attrs": { "role": "search", "aria-label": "Public catalog search" }, "text": "Find public information", "box": [10, 15, 520, 110] },
+    { "id": "searchLabel", "parent": "searchForm", "tag": "label", "attrs": { "for": "query" }, "text": "Search catalog", "box": [22, 25, 190, 24] },
+    { "id": "query", "parent": "searchForm", "tag": "input", "attrs": { "type": "search", "name": "q", "autocomplete": "off", "role": "combobox", "aria-expanded": "false", "placeholder": "Search public catalog" }, "value": "public books", "box": [22, 58, 310, 38] },
+    { "id": "searchButton", "parent": "searchForm", "tag": "button", "attrs": { "type": "submit", "aria-label": "Search" }, "text": "Search", "box": [344, 58, 92, 38] },
+    { "id": "result", "tag": "a", "attrs": { "href": "https://docs.example.test/article?tracking=synthetic#section" }, "text": "Open public article", "box": [22, 160, 190, 28] }
+  ],
+  "annotations": { "searchField": "query", "safeLink": "https://docs.example.test/article", "publicValue": "public books" }
+}

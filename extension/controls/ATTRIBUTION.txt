@@ -1,0 +1,97 @@
+---
+license: mit
+language:
+- en
+tags:
+- computer-vision
+- object-detection
+- yolov5
+- edge-deployment
+- ncnn
+- onnx
+- arm
+metrics:
+- mAP
+model-index:
+- name: Carwin Element Detection
+  results:
+  - task:
+      type: object-detection
+    dataset:
+      type: desktop-ui-elements
+      name: Desktop UI Elements
+    metrics:
+    - type: mAP@0.5
+      value: 0.925
+    - type: mAP@0.5:0.95
+      value: 0.648
+---
+
+# Carwin Desktop UI Element Detection (YOLOv5n)
+
+A lightweight YOLOv5n model trained to detect interactive UI elements on desktop screens (buttons, icons, input fields, checkboxes, etc.).
+
+## Model Details
+
+- **Architecture**: YOLOv5n (ReLU activation, SiLU→ReLU for RKNN/NCNN compatibility)
+- **Input**: 640×640 RGB
+- **Output**: Single class "element" — bounding boxes for interactive UI regions
+- **Model size**: 5.3 MB (PyTorch), 7.5 MB (ONNX)
+- **Training**: 200 epochs on NVIDIA B200 (single GPU)
+
+## Performance
+
+| Metric | Value |
+|--------|-------|
+| mAP@0.5 | **0.925** |
+| mAP@0.5:0.95 | **0.648** |
+| Training images | 10,825 |
+
+## Edge Deployment
+
+Deployed to ARM Cortex-A7 via NCNN INT8 quantization:
+
+| Resolution | Inference Time |
+|-----------|---------------|
+| 640×640 | 6.5s |
+| 320×320 | 1.6s |
+| 160×160 | 370ms |
+
+ONNX → NCNN → INT8 quantization pipeline included in the training repository.
+
+## Usage
+
+```python
+import torch
+
+# Load model
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='model.pt')
+model.conf = 0.25
+
+# Run inference
+results = model('screenshot.png')
+results.show()
+```
+
+## Files
+
+- `model.pt` — PyTorch weights (5.3 MB)
+- `model.onnx` — ONNX export (7.5 MB, opset 12, batch=1, 640×640)
+
+## Training
+
+Trained from `yolov5n.pt` pretrained weights with:
+
+```bash
+python train.py --data dataset.yaml --weights yolov5n.pt \
+    --epochs 200 --batch-size 64 --device 0 --imgsz 640 \
+    --single-cls --amp=False
+```
+
+- GPU: NVIDIA B200 (180 GB)
+- PyTorch: 2.12 + CUDA 13.0
+- Dataset: 10,825 annotated desktop screenshots
+
+## License
+
+MIT

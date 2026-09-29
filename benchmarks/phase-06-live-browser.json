@@ -1,0 +1,164 @@
+{
+  "browser": "Edge headless disposable unpacked MV3 extension",
+  "extensionOrigin": "chrome-extension://mdimbjeanhagcmpcdpdgjjjbeibflkob",
+  "model": {
+    "ok": true,
+    "elapsedMs": 421.79999999701977,
+    "count": 0,
+    "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+    "outputKeys": [
+      "complete",
+      "source",
+      "modelSha256",
+      "width",
+      "height",
+      "lease",
+      "detections"
+    ],
+    "boxes": [],
+    "rawStats": {
+      "inputSha256": "f84b6a29f37ca35fdf9bbbdd755cfa307759b743c060b22295b98acc3dddaeee",
+      "maxScore": 0.4883815324793055
+    },
+    "fusion": null,
+    "wallMs": 438
+  },
+  "ocr": {
+    "ok": true,
+    "capabilities": {
+      "worker": "function",
+      "canvas": "function",
+      "tesseract": "function",
+      "crypto": true,
+      "ready": true,
+      "assets": [
+        {
+          "asset": "vendor/tesseract.min.js",
+          "ok": true,
+          "redirected": false,
+          "size": 62961
+        },
+        {
+          "asset": "vendor/worker.min.js",
+          "ok": true,
+          "redirected": false,
+          "size": 111162
+        },
+        {
+          "asset": "vendor/tesseract-core-lstm.wasm.js",
+          "ok": true,
+          "redirected": false,
+          "size": 3954181
+        },
+        {
+          "asset": "vendor/tesseract-core-lstm.wasm",
+          "ok": true,
+          "redirected": false,
+          "size": 2871085
+        },
+        {
+          "asset": "vendor/tesseract-core-simd-lstm.wasm.js",
+          "ok": true,
+          "redirected": false,
+          "size": 3954569
+        },
+        {
+          "asset": "vendor/tesseract-core-simd-lstm.wasm",
+          "ok": true,
+          "redirected": false,
+          "size": 2871377
+        },
+        {
+          "asset": "languages/eng.traineddata.gz",
+          "ok": true,
+          "redirected": false,
+          "size": 2952873
+        }
+      ]
+    },
+    "ms": 414,
+    "complete": true,
+    "wordCount": 3,
+    "maskCount": 1,
+    "fullBlackout": false,
+    "wallMs": 437
+  },
+  "visual": {
+    "ok": true,
+    "wallMs": 1000,
+    "proof": "captain.visual-privacy.v2",
+    "digestOK": true,
+    "coverage": true,
+    "rawScreenshotTransmitted": false,
+    "pixelMaskCount": 1,
+    "dimensions": [
+      640,
+      480
+    ],
+    "emailPixel": [
+      9,
+      9,
+      11
+    ],
+    "backgroundPixel": [
+      9,
+      9,
+      11
+    ],
+    "leakedModelData": false
+  },
+  "fixture": {
+    "model": {
+      "ok": true,
+      "elapsedMs": 330.69999999925494,
+      "count": 0,
+      "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+      "outputKeys": [
+        "complete",
+        "source",
+        "modelSha256",
+        "width",
+        "height",
+        "lease",
+        "detections"
+      ],
+      "boxes": [],
+      "rawStats": {
+        "inputSha256": "784fdaccbe7cc755a7940aecc32dafc929d7b53378f125752a237d340ce67310",
+        "maxScore": 0.6966391423036384
+      },
+      "fusion": null
+    },
+    "pixelSha256": "4bf0378657442abed8ef7e571640ca437f45f7cd7ee3977f9ea99be534c61872",
+    "visionOk": true,
+    "visionError": null,
+    "proof": {
+      "v2": true,
+      "digestOK": true,
+      "piiPixel": [
+        9,
+        9,
+        11
+      ],
+      "matchedSensitivePixel": [
+        9,
+        9,
+        11
+      ],
+      "outsidePixel": [
+        9,
+        9,
+        11
+      ],
+      "leak": false,
+      "maskCount": 1
+    },
+    "negative": {
+      "invalidScreenshotGeneric": true,
+      "missingSnapshotBlackout": true,
+      "staleLeaseBlackout": true,
+      "unknownPIIBoxBlackout": true
+    },
+    "nodeDecoderPixelSha256": "4bf0378657442abed8ef7e571640ca437f45f7cd7ee3977f9ea99be534c61872"
+  }
+}

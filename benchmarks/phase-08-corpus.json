@@ -1,0 +1,18 @@
+{
+  "schema": "captain.original-phase-08.corpus.v1",
+  "basis": "Existing controlled groundTruth.json synthetic cases; not a representative web sample.",
+  "heldOutCaseIds": ["login-form", "checkout-page", "face-page", "mixed-privacy", "long-scroll", "modal-dialog", "responsive-controls", "email-heavy", "image-card", "dynamic-content"],
+  "variants": [
+    { "case": "shopping-search", "variant": "dark", "split": "development" },
+    { "case": "login-form", "variant": "zoom125", "split": "held-out" },
+    { "case": "checkout-page", "variant": "dark", "split": "held-out" },
+    { "case": "face-page", "variant": "zoom125", "split": "held-out" },
+    { "case": "mixed-privacy", "variant": "dark", "split": "held-out" },
+    { "case": "long-scroll", "variant": "scroll-bottom", "split": "held-out" },
+    { "case": "responsive-controls", "variant": "zoom75", "split": "held-out" },
+    { "case": "email-heavy", "variant": "dark", "split": "held-out" },
+    { "case": "image-card", "variant": "zoom75", "split": "held-out" },
+    { "case": "dynamic-content", "variant": "dark", "split": "held-out" }
+  ],
+  "limits": "Fixed visible evaluation split; pixel-mask IoU requires separate spatial annotation; photographic-face accuracy not measured."
+}

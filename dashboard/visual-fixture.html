@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAPTAIN Synthetic Visual Table</title>
+<style>
+body{margin:0;font:14px Arial;color:#262932;background:#fafafa}
+header{background:#f0f0f3;padding:10px 20px}
+main{padding:18px 30px}
+button,input,a{font:14px Arial;padding:7px;margin:5px;border:1px solid #858b97}
+button{background:#e4e7f0;color:#262932;cursor:pointer}
+input{width:260px}table{border-collapse:collapse;width:95%}
+td,th{border-bottom:1px solid #ddd;padding:10px;text-align:left}
+a{color:#245dc9}
+button[data-choice="A"]{background:#119b50;color:#fff}
+#selected{min-height:30px}
+.private-fixture{display:block;margin-top:12px}
+.face-sample{display:block;margin-top:24px;width:118px;height:96px;border-radius:8px}
+</style></head><body>
+<header>Offline Inventory</header><main><h2>Fixture rows</h2>
+<input placeholder="Find entries"><button type="button">Search</button>
+<table><tr><th>Item</th><th>Details</th></tr>
+<tr><td>Example A</td><td><button type="button" data-choice="A">Inspect</button><a href="#local">Read</a></td></tr>
+<tr><td>Example B</td><td><button type="button" data-choice="B">Inspect</button><a href="#local">Read</a></td></tr>
+<tr><td>Example C</td><td><button type="button" data-choice="C">Inspect</button><a href="#local">Read</a></td></tr></table>
+<button type="button">Next page</button><p id="selected" role="status"></p>
+<!-- Known synthetic PII and existing local face test crop exercise the SAME
+     live sanitization boundary as the screenshot-derived button selection. -->
+<section class="private-fixture" aria-label="Synthetic privacy samples">
+ <div><p><span data-captain-private="EMAIL">luv.tankha.sih@example.com</span></p>
+ <p><span data-captain-private="PHONE">+91 9876543210</span></p></div>
+ <svg class="face-sample" data-captain-private="RASTER_CONTENT" role="img" aria-label="Synthetic illustrated face" viewBox="0 0 118 96" xmlns="http://www.w3.org/2000/svg">
+  <rect width="118" height="96" fill="#bed9e6"/>
+  <circle cx="59" cy="48" r="32" fill="#ffcf61" stroke="#805d2a" stroke-width="2"/>
+  <circle cx="48" cy="42" r="3" fill="#302c30"/>
+  <circle cx="70" cy="42" r="3" fill="#302c30"/>
+  <path d="M46 57 Q59 70 72 57" fill="none" stroke="#805d2a" stroke-width="3" stroke-linecap="round"/>
+ </svg>
+</section>
+<!-- A small unknown raster is always masked locally; the rest of the page
+     must remain useful only if OCR and the pinned UI model both verify it. -->
+<canvas width="20" height="20" style="position:fixed;right:5px;bottom:5px;background:#ddd"></canvas>
+</main><script>
+// Synthetic fixture only. The color is deliberately absent from accessible
+// labels, page text and element names; a model must inspect usable pixels.
+for(const button of document.querySelectorAll('button[data-choice]')){
+  button.addEventListener('click',()=>{
+    window.__captainFixtureClickCount=(window.__captainFixtureClickCount||0)+1;
+    document.querySelector('#selected').dataset.choice=button.dataset.choice;
+    document.querySelector('#selected').textContent='Selection recorded.';
+  });
+}
+</script></body></html>

@@ -1,0 +1,15 @@
+{
+  "scope": "ONE isolated synthetic 1024x768 Edge page, 9 browser DOM-labelled interactive controls; no population accuracy estimate",
+  "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+  "actualModelRuns": 1,
+  "iouThreshold": 0.5,
+  "confidenceThreshold": 0.75,
+  "groundTruthCount": 9,
+  "predictions": 0,
+  "truePositive": 0,
+  "falsePositive": 0,
+  "falseNegative": 9,
+  "precision": null,
+  "recall": 0,
+  "matches": []
+}

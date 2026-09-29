@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPTAIN SIH26171 — bounded Phase 9 evidence</title>
+  <style>
+    :root { color-scheme: dark; font: 16px/1.5 system-ui, sans-serif; background:#0c1420; color:#edf4fc; }
+    body { max-width:1100px; margin:0 auto; padding:2rem 1rem 4rem; }
+    h1 { font-size:clamp(1.8rem,4vw,2.7rem); line-height:1.15; }
+    a { color:#a1ddf5; } p { color:#d4dfed; }
+    .notice { padding:1rem 1.2rem; border:1px solid #ad8b58; border-radius:12px; background:#282218; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .card { border:1px solid #33465b; border-radius:12px; padding:1rem; background:#142238; }
+    .card strong { display:block; font-size:2rem; letter-spacing:-.025em; }
+    small { display:block; color:#bfd0e2; }
+    table { width:100%; border-collapse:collapse; margin:1rem 0; }
+    td,th { padding:.75rem .5rem; border-bottom:1px solid #33465b; text-align:left; vertical-align:top; }
+    .bar { display:block; height:1.1rem; border-radius:5px; background:#2b3a4d; overflow:hidden; min-width:90px; }
+    .bar i { display:block; height:100%; background:#7abace; }
+    .bar i.warning { background:#d6a763; }
+    .source { font-size:.9rem; border-top:1px solid #33465b; padding-top:1.2rem; }
+    code { overflow-wrap:anywhere; }
+  </style>
+</head>
+<body>
+  <p><a href="/">← Existing CAPTAIN dashboard</a></p>
+  <h1>Original Phase 9 — evidence, not a product-quality pass</h1>
+  <p>Static, deliberately bounded numerical snapshot combining the original Phase-8 evaluation and renewed Phase-9 browser acceptance on 27 September 2026. This page contains no raw screenshots, OCR words, credentials, page text, model boxes or private runtime telemetry. It does not ingest a before image.</p>
+  <div class="notice"><strong>LOCAL SIH PROTOTYPE — NOT PUBLIC-RELEASE READY.</strong>
+    The latest bounded live demo wrappers pass 5/5 each, but an earlier fresh visual batch passed only 4/5 and is preserved as negative evidence. General visual quality and public-release acceptance are false. A later 13-case model replay stopped at 0/13; the earlier completed model result below is preserved evidence, not a fresh detector pass.
+  </div>
+  <div class="grid">
+    <div class="card"><small>Controlled post-inspected DOM fixtures</small><strong>40/40</strong><small>82 control boxes. Not trained UI-model accuracy.</small></div>
+    <div class="card"><small>Pinned UI ONNX, 13 synthetic private Chrome cases</small><strong>0 / 43</strong><small>TP0, FP0, FN43; recall zero, precision undefined.</small></div>
+    <div class="card"><small>Outgoing JPEG labelled private interiors</small><strong>5 / 5</strong><small>All seven interiors protected; v2 hash/proof and tamper rejection.</small></div>
+    <div class="card"><small>Larger-image selective public preservation</small><strong>0 / 5</strong><small>95.23% of labelled public pixels changed by full blackout.</small></div>
+  </div>
+  <h2>Five SIH26171 evaluation areas</h2>
+  <table>
+    <thead><tr><th>Area / weight</th><th>Measured evidence</th><th>Interpretation</th></tr></thead>
+    <tbody>
+      <tr><td>Visual perception · 25</td><td><span class="bar"><i style="width:0%"></i></span> Pinned TP0 / FN43</td><td>No demonstrated general model grounding; controlled DOM 40/40 is separate.</td></tr>
+      <tr><td>PII detection · 20</td><td>33 controlled kind matches; seven seeded canary classes absent in scoped egress</td><td>No real-world/multilingual recall or exhaustive network claim.</td></tr>
+      <tr><td>Redaction · 20</td><td><span class="bar"><i style="width:100%"></i></span> 5/5 labelled privacy, <span class="bar"><i class="warning" style="width:0%"></i></span> 0/5 selective utility</td><td>Full blackout preserves labelled secrets at the expense of usable image context.</td></tr>
+      <tr><td>Client resources · 20</td><td>Final privacy batch dedicated-browser p95 1,229.14 MiB, CPU 105.37% of one core</td><td>Whole dedicated-browser aggregate bound, not extension-only; run-to-run variability.</td></tr>
+      <tr><td>Task latency · 15</td><td>See independent p95 bar chart below</td><td>Different five-run task types, not normalized scores or a guaranteed SLA.</td></tr>
+    </tbody>
+  </table>
+  <h2>Whole-task p95 latency, five fresh Phase-9 runs each</h2>
+  <p>Lengths scaled to the largest (visual A/B) value. Earlier Phase-8 p95 values were public 19,877 ms, synthetic form 725 ms and visual pair 145,999 ms; those remain a separate historical batch, not the current five-run result.</p>
+  <table>
+    <thead><tr><th>Workflow</th><th>p95 elapsed</th><th>Relative duration</th></tr></thead>
+    <tbody>
+      <tr><td>Public screenshot-on search (5/5)</td><td>16,970 ms</td><td><span class="bar"><i style="width:64%"></i></span></td></tr>
+      <tr><td>Local synthetic private form (5/5)</td><td>598 ms</td><td><span class="bar"><i style="width:2.3%"></i></span></td></tr>
+      <tr><td>Optional local-model visual A/B (5/5 after an earlier 4/5 failed batch)</td><td>26,472 ms</td><td><span class="bar"><i class="warning" style="width:100%"></i></span></td></tr>
+    </tbody>
+  </table>
+  <p><strong>Scoped private-worker egress:</strong> four synthetic tasks, eight planner POSTs, four metrics POSTs, eight digest-bound native-v2 JPEG proofs, zero unexpected observed worker POST destinations. This is not an all-OS egress audit.</p>
+  <p><strong>Release blockers:</strong> model recall, unusable large-screen selective masking, unverified redistribution lineage of the nonproduction research model, independent legal/security/browser validation, fresh-machine reproduction and owner approval. Firefox was static-checked, not live-tested.</p>
+  <p class="source">Grounding: <code>runtime/phase-08-acceptance-gate.json</code> and fresh ignored <code>runtime/phase-08-real-{public,form,visual}-trials.json</code> plus <code>runtime/phase-08-privacy-five-run.json</code>; reproducible local commands and limitations at <code>docs/phase-reports/PHASE-09.md</code>. Runtime evidence is not included in this source ZIP. This reviewed standalone static snapshot ships with the clean source archive and is served only by the local companion’s exact allowlisted route.</p>
+</body>
+</html>

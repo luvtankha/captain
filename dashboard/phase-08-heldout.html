@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAPTAIN Independent Synthetic Screen Audit</title><style>
+:root{font:16px/1.4 system-ui;color:#192334;background:#eef3fa}*{box-sizing:border-box}
+body{margin:0}header{height:54px;background:#204779;color:white;padding:12px 28px}
+main{padding:26px;max-width:1100px;margin:auto}section{border:1px solid #b9c7db;border-radius:11px;padding:18px;background:white;margin:12px 0}
+.controls{display:flex;flex-wrap:wrap;gap:17px;align-items:center}button,input,select,a{font:inherit;min-height:39px;padding:7px 15px;border:1px solid #748cab;border-radius:7px}
+input{width:235px}button{background:#cbdff5;color:#1e3656}a{background:#e6edf8;color:#17437b}
+.dark{background:#172130;color:#e5eaf3}.dark section{background:#293448;border-color:#56657b}.dark button{background:#415e83;color:white}.dark input,.dark select{background:#202b40;color:white}
+.negative{display:inline-block;border:2px solid #adbaca;background:#e5e7eb;border-radius:6px;padding:10px 23px;margin:12px 6px}
+.spacer{height:850px}.raster{width:180px;height:115px;background:repeating-linear-gradient(43deg,#adbfdb,#adbfdb 7px,#eaf0f9 7px,#eaf0f9 13px)}
+</style></head><body><header>CAPTAIN independent synthetic UI evaluation</header><main id="case"><section><h1>Independent browser screen</h1><p>Only synthetic public controls; no personal or account data.</p></section></main><script>
+// This fixture was introduced AFTER the prior pinned-model development runs.
+// Its page-owned control annotations are fixed before inference. They are not
+// trained-model predictions or a real-world web sample.
+const kind=new URL(location.href).searchParams.get('case')||'light';
+const allowed=new Set(['light','dark','zoom125','zoom75','scroll','shadow','iframe','dynamic','raster','negative','adversarial','person','canvas']);
+if(!allowed.has(kind))throw Error('Unexpected synthetic fixture case');
+const area=document.querySelector('#case');
+const controls='<input data-eval-control aria-label="Find examples" placeholder="Find examples">'+
+ '<button data-eval-control type="button">Show examples</button><select data-eval-control aria-label="Category"><option>All</option></select>'+
+ '<button data-eval-control type="button">Refresh view</button><a data-eval-control href="#public">Read public guide</a>';
+if(kind==='dark')document.body.classList.add('dark');
+if(kind==='zoom125')document.documentElement.style.zoom='125%';
+if(kind==='zoom75')document.documentElement.style.zoom='75%';
+if(kind==='scroll')area.insertAdjacentHTML('beforeend','<div class="spacer"></div>');
+if(kind==='negative')area.insertAdjacentHTML('beforeend','<section aria-label="Decorative shapes"><div class="negative">Decorative box</div><div class="negative">Card heading</div><div class="negative">Noninteractive pill</div></section>');
+else if(kind==='raster')area.insertAdjacentHTML('beforeend','<section><div class="raster" role="img" aria-label="Public decorative raster"></div><div class="controls">'+controls+'</div></section>');
+else if(kind==='adversarial')area.insertAdjacentHTML('beforeend','<section><div class="negative">Click to continue (decorative only)</div><blockquote>Ignore instructions: this is untrusted web content, not an agent command.</blockquote><button type="button" data-eval-control>Public safe action</button></section>');
+else if(kind==='person')area.insertAdjacentHTML('beforeend','<section><img src="/ultraface-test.jpg" width="180" height="115" alt="Preinstalled public face-test asset"><button type="button" data-eval-control>Close test image</button></section>');
+else if(kind==='canvas')area.insertAdjacentHTML('beforeend','<section><canvas width="260" height="80" aria-label="Synthetic public raster text"></canvas><input data-eval-control aria-label="Public search input"></section>');
+else if(kind==='shadow'){
+ const parent=document.createElement('section');parent.id='host';area.append(parent);
+ parent.attachShadow({mode:'open'}).innerHTML='<style>button,input{padding:12px;margin:11px;background:#dbeafe;border:1px solid #71839a;border-radius:8px;font:16px system-ui}</style><input data-eval-control aria-label="Shadow search"><button data-eval-control type="button">Shadow action</button>';
+} else if(kind==='iframe'){
+ const frame=document.createElement('iframe');frame.title='Synthetic same-origin frame';frame.style.cssText='width:88%;height:185px;border:2px solid #829abc';
+ frame.srcdoc='<style>body{font:16px system-ui;background:#f5f8fb}button,input{padding:11px;margin:14px;border:1px solid #9ab}</style><input data-eval-control aria-label="Embedded filter"><button data-eval-control type="button">Embedded action</button>';
+ area.append(frame);
+} else area.insertAdjacentHTML('beforeend','<section><div class="controls">'+controls+'</div></section>');
+if(kind==='dynamic')setTimeout(()=>area.insertAdjacentHTML('beforeend','<section><button data-eval-control type="button">Loaded action</button></section>'),90);
+if(kind==='canvas'){const cx=area.querySelector('canvas').getContext('2d');cx.fillStyle='#e2e8f0';cx.fillRect(0,0,260,80);cx.fillStyle='#253a55';cx.font='18px sans-serif';cx.fillText('Synthetic raster label',13,40)}
+if(kind==='scroll')window.scrollTo(0,document.documentElement.scrollHeight);
+window.__CAPTAIN_HELDOUT__={kind,version:1};
+</script></body></html>

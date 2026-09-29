@@ -1,0 +1,9 @@
+{
+  "title": "Synthetic dynamic form and same-looking replacement",
+  "nodes": [
+    { "id": "form", "tag": "form", "attrs": { "role": "search" }, "text": "Search public records", "box": [10, 20, 440, 150] },
+    { "id": "query", "parent": "form", "tag": "input", "attrs": { "type": "search", "name": "q", "aria-label": "Search records" }, "value": "public only", "box": [20, 50, 230, 38] },
+    { "id": "stable", "parent": "form", "tag": "button", "attrs": { "type": "button", "aria-label": "Load records" }, "text": "Load records", "box": [265, 50, 130, 38] }
+  ],
+  "annotations": { "replace": "stable", "sameLookText": "Load records", "mutations": ["childList", "attributes", "characterData"] }
+}

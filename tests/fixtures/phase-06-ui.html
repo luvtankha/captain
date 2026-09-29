@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Synthetic CAPTAIN UI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f9;color:#222e3f;font:16px Arial,sans-serif}
+header{background:#1e3459;color:white;height:68px;padding:20px 32px;font-size:24px}
+nav{float:left;width:204px;min-height:650px;background:white;border-right:1px solid #d7dfeb;padding:30px 15px}
+nav button{display:block;width:100%;margin-bottom:12px;background:white;border:1px solid #ccd5e4;border-radius:6px;padding:12px;color:#263f68;text-align:left;font-size:16px}
+main{margin-left:228px;padding:32px}section{background:white;border:1px solid #dbe2ec;border-radius:10px;padding:26px;max-width:705px}
+h1{font-size:25px;margin:0 0 10px}p{color:#52637b;margin:10px 0 22px}
+label{display:block;margin:18px 0 7px;font-weight:bold}input,select{width:100%;font:16px Arial;padding:13px 12px;border:1px solid #aebbd0;border-radius:5px;background:white}
+.actions{margin-top:25px}button.primary{background:#236be5;color:white;border:0;border-radius:5px;padding:13px 28px;font:16px Arial}
+button.secondary{background:#e8edf4;color:#253952;border:1px solid #ccd5e4;border-radius:5px;padding:12px 25px;font:16px Arial;margin-left:10px}
+.tick{display:flex;align-items:center;gap:10px;margin-top:19px}.tick input{width:20px;height:20px}
+</style></head><body>
+<header>CAPTAIN synthetic test dashboard</header>
+<nav><button>Overview</button><button>Activities</button><button>Settings</button></nav>
+<main><section><h1>New demonstration form</h1><p>No personal data or external requests.</p>
+<label for="name">Demo name</label><input id="name" type="text" value="Example User">
+<label for="email">Synthetic email</label><input id="email" type="email" value="demo@example.test">
+<label for="type">Category</label><select id="type"><option>Demo category</option></select>
+<div class="tick"><input type="checkbox" id="agree"><label for="agree">Use demo data only</label></div>
+<div class="actions"><button class="primary">Create demo</button><button class="secondary">Cancel</button></div>
+</section></main><script>
+const labels = [...document.querySelectorAll('button,input,select')].map((element, index) => {
+  const r = element.getBoundingClientRect();
+  return { index, tag: element.tagName.toLowerCase(), type: element.getAttribute('type') || null,
+    box: { x1: r.left, y1: r.top, x2: r.right, y2: r.bottom } };
+});
+const metadata = document.createElement('script');
+metadata.id = 'fixture-ground-truth'; metadata.type = 'application/json';
+metadata.textContent = JSON.stringify(labels);
+document.body.appendChild(metadata);
+</script></body></html>

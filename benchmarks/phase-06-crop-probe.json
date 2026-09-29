@@ -1,0 +1,128 @@
+{
+  "modelSha256": "d29b6210d171e3dc5454e09847aaabce6a0255eaefa565b639e1301a9e933ef9",
+  "scope": "research-only Node VM canvas approximation, not browser-native validation",
+  "runs": 11,
+  "results": [
+    {
+      "rect": [
+        0,
+        0,
+        1024,
+        768
+      ],
+      "elapsedMs": 446,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        0,
+        0,
+        512,
+        768
+      ],
+      "elapsedMs": 187,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        512,
+        0,
+        512,
+        768
+      ],
+      "elapsedMs": 188,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        0,
+        0,
+        1024,
+        384
+      ],
+      "elapsedMs": 212,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        0,
+        384,
+        1024,
+        384
+      ],
+      "elapsedMs": 201,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "elapsedMs": 186,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        512,
+        0,
+        512,
+        384
+      ],
+      "elapsedMs": 186,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        0,
+        384,
+        512,
+        384
+      ],
+      "elapsedMs": 189,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        512,
+        384,
+        512,
+        384
+      ],
+      "elapsedMs": 183,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        200,
+        400,
+        500,
+        250
+      ],
+      "elapsedMs": 178,
+      "count": 0,
+      "detections": []
+    },
+    {
+      "rect": [
+        200,
+        200,
+        600,
+        400
+      ],
+      "elapsedMs": 187,
+      "count": 0,
+      "detections": []
+    }
+  ]
+}

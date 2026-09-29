@@ -1,0 +1,17 @@
+# Optional TrueSight source-derived privacy bridge (Phase 07, partial)
+
+Reference repository: https://github.com/berserk-23115/TrueSight
+Selected source revision: 325a9478f51ad8c623036982118f28cfbf4dd66f.
+Original project source is MIT licensed, copyright (c) 2024 Arnesh Batra.
+The complete upstream MIT license remains in the sibling reference ZIP,
+`TrueSight-Integration.zip`; no original TrueSight source or weights are copied
+into this extension. This independently authored adapter handles only bounded
+local word-index predictions and opaque rectangles, not Streamlit inference.
+
+The reference ZIP contains neither the matching DeBERTa checkpoint and
+tokenizer nor a trained MobileBERT checkpoint. The optional adapter is
+therefore `ready:false`; it makes no TrueSight classifier accuracy or inference
+claim. Model licenses are independent of the source MIT notice. To activate a
+future classifier, pin and check *matching* weights, tokenizer, label mapping,
+model license and hash, implement offline bounded inference, and test real
+synthetic pixel masking. Never treat a missing/failed model as a safe image.

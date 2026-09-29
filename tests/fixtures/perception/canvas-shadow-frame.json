@@ -1,0 +1,16 @@
+{
+  "title": "Synthetic uninspectable canvas, open shadow root, same-origin frame and inaccessible cross-origin frame",
+  "nodes": [
+    { "id": "canvas", "tag": "canvas", "attrs": { "aria-label": "Chart rendered as pixels" }, "box": [20, 20, 300, 180] },
+    { "id": "shadowHost", "tag": "section", "attrs": { "aria-label": "Open shadow host" }, "box": [20, 230, 340, 140], "shadow": [
+      { "id": "shadowInput", "tag": "input", "attrs": { "type": "text", "aria-label": "Shadow search", "name": "shadowQuery" }, "value": "public", "box": [35, 250, 180, 36] },
+      { "id": "shadowButton", "tag": "button", "attrs": { "aria-label": "Find in shadow" }, "text": "Find in shadow", "box": [220, 250, 125, 36] }
+    ] },
+    { "id": "sameFrame", "tag": "iframe", "attrs": { "title": "Same-origin sample frame" }, "box": [400, 20, 300, 190], "frame": { "accessible": true, "nodes": [
+      { "id": "frameQuery", "tag": "input", "attrs": { "type": "search", "aria-label": "Frame query" }, "value": "public", "box": [8, 8, 150, 34] },
+      { "id": "frameButton", "tag": "button", "attrs": { "aria-label": "Frame search" }, "text": "Frame search", "box": [165, 8, 100, 34] }
+    ] } },
+    { "id": "crossFrame", "tag": "iframe", "attrs": { "title": "Inaccessible sample frame" }, "box": [400, 235, 300, 155], "frame": { "accessible": false } }
+  ],
+  "annotations": { "visualOnly": ["canvas", "crossFrame"], "openShadow": ["shadowInput", "shadowButton"], "accessibleFrame": ["frameQuery", "frameButton"], "doNotInventCrossFrameControls": true }
+}

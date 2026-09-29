@@ -1,0 +1,31 @@
+# CAPTAIN Phase 07 — independent PII model, not TrueSight
+
+Selected source: https://huggingface.co/gravitee-io/bert-small-pii-detection
+Immutable revision: f8c27a85c51c0168f07b9dcf00265bf0a4097939
+Publisher-declared license: Apache-2.0 (see unmodified original README.md
+model card and APACHE-2.0-LICENSE.txt). Original BERT-small base model:
+https://huggingface.co/prajjwal1/bert-small (published MIT tag).
+
+Original publisher's **model.quant.onnx** (not a third-party ONNX mirror):
+28,732,710 bytes; SHA-256
+b227845ff4989c9f7383874b841895dfbdb9a4d7a20ceb39c3f187271894bf2a.
+Matching publisher config and tokenizer vocabulary are pinned by the
+packaging guard and checked again in the local worker before inference.
+Its task is BERT token classification with 51 BIO label IDs.
+
+Original model card lists beki/privy, gretelai/synthetic_pii_finance_multilingual,
+and eriktks/conll2003 as training datasets. Dataset license terms should be
+reviewed separately before external distribution; a published model-card
+Apache-2.0 tag does not settle all downstream dataset rights. This model's
+English-oriented training does not demonstrate Hindi/Hinglish coverage.
+Model-reported accuracy is not a CAPTAIN screenshot accuracy claim.
+
+This independent optional classifier only adds opaque OCR-word pixel masks or
+returns full blackout. It cannot produce planner text, selectors, action refs,
+raw model output or unredacted screenshot egress, and cannot undo existing
+OCR/DOM/face/UI blackouts. Unsupported non-ASCII OCR and ambiguous model
+output force full blackout. Model-integrity/loading failure is not evidence
+that a screenshot is safe. TrueSight original bridge remains ready:false.
+
+Phase 07 remains PARTIAL until genuine in-extension end-to-end tests,
+privacy-recall and performance evidence establish release readiness.
