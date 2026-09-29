@@ -1,6 +1,6 @@
 # CAPTAIN
 
-CAPTAIN is a privacy-first browser agent that runs as a Manifest V3 browser extension with a local companion service. It accepts user commands, observes the active webpage locally, detects sensitive information before planning, redacts protected regions, asks for consent when required, and executes only validated browser actions.
+CAPTAIN is a privacy-first browser agent built for the Smart India Hackathon 2026 Final Round under SIH26171 — On-device Visual Perception for Light-weight Browser Agents. It runs as a Manifest V3 browser extension with a local companion service, observes webpages locally, detects sensitive information before planning, redacts protected regions, asks for consent when required, and executes only validated browser actions.
 
 The project is designed so raw sensitive values and unverified screenshots do not need to leave the browser privacy boundary.
 
