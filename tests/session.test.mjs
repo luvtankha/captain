@@ -4,6 +4,36 @@ import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 const code = await readFile(new URL('../extension/service-worker.js', import.meta.url), 'utf8');
 
+test('an explicit normal tab wins over an older window and legacy binding', async () => {
+  const values={'captainWindow:3':{tabId:9,windowId:3},'captainTarget:12':{tabId:9,windowId:3}};
+  const visited=[];
+  const sandbox={chrome:{
+    runtime:{getURL:p=>`chrome-extension://captain/${p}`,onMessage:{addListener(){}}},
+    windows:{get:async()=>({incognito:false})},
+    storage:{session:{get:async key=>({[key]:values[key]}),set:async data=>Object.assign(values,data)}},
+    tabs:{get:async id=>{visited.push(id);return {id,windowId:3,incognito:false,url:'https://example.org/'};},
+      create:async()=>{throw Error('Explicit target must not create a tab');}}
+  }};
+  vm.runInNewContext(code,sandbox);
+  assert.equal((await sandbox.resolveTarget(12,3)).id,12);
+  assert.deepEqual(visited,[12]);
+  assert.equal(values['captainWindow:3'].tabId,12);
+  assert.equal(values['captainTarget:12'].tabId,12);
+});
+
+test('an explicit moved or incognito tab cannot fall back to an older safe binding', async () => {
+  for(const target of [{id:12,windowId:4,incognito:false},{id:12,windowId:3,incognito:true}]) {
+    const sandbox={chrome:{
+      runtime:{getURL:p=>`chrome-extension://captain/${p}`,onMessage:{addListener(){}}},
+      windows:{get:async()=>({incognito:false})},
+      storage:{session:{get:async key=>({[key]:{tabId:9,windowId:3}}),set:async()=>{throw Error('Must not bind');}}},
+      tabs:{get:async id=>id===12?target:{id:9,windowId:3,incognito:false},create:async()=>{throw Error('Must not create');}}
+    }};
+    vm.runInNewContext(code,sandbox);
+    await assert.rejects(sandbox.resolveTarget(12,3),/another window/);
+  }
+});
+
 test('saved normal target is restored after worker restart', async () => {
   const sandbox = { chrome: { runtime: { onMessage: { addListener() {} } }, storage: { session: { get: async () => ({ 'captainTarget:7': { tabId: 9, windowId: 3 } }) } }, tabs: { get: async id => ({ id, windowId: 3, incognito: false }) } } };
   vm.runInNewContext(code, sandbox);

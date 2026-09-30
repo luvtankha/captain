@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { cdp, debugJson, evaluate, extensionPath, findSession } from './reload-in-place.mjs';
+import {summarize} from './phase-08-score.mjs';
+import {sourceFingerprint} from './evidence-provenance.mjs';
 
 // Public navigation and empty login fields only. Never insert credentials.
 const coverage = process.argv.includes('--coverage');
@@ -21,17 +23,29 @@ const controller = session.controller;
 const read = () => evaluate(controller, "chrome.runtime.sendMessage({type:'GET_STATE'})");
 const initial = await read();
 assert.ok(!busy.has(initial.status), 'An existing task is active. Audit did not interrupt it.');
-const report = { testedAt: new Date().toISOString(), scope: 'public navigation in dedicated normal browser; typed commands; no credentials; not universal website certification', steps: [] };
+const report = { testedAt: new Date().toISOString(), sourceFingerprint:await sourceFingerprint(), scope: 'public navigation and expected credential handoff in an owned normal tab; no credentials; not universal website certification or heterogeneous task benchmark', steps: [] };
+const destination=new URL(coverage ? '../runtime/website-coverage.json' : '../runtime/live-flow-audit.json', import.meta.url);
+await mkdir(new URL('../runtime/', import.meta.url), { recursive: true });
+const checkpoint=()=>writeFile(destination,JSON.stringify(report,null,2));
 const safeContractDiagnostic = value => value &&
   typeof value.path === 'string' && /^[A-Za-z0-9_.\[\]]{1,160}$/.test(value.path) &&
   typeof value.reason === 'string' && /^[a-z-]{2,40}(?: [a-z-]{2,40}){0,4}$/.test(value.reason)
   ? { path: value.path, reason: value.reason } : undefined;
-let targetId = initial.session?.tabId;
+assert.ok(cases.every(task=>/^(?:open [a-z0-9.-]+(?:\/login)?|sign in to github)$/i.test(task)), 'Unsupported audit command.');
+// Never reuse the user's existing working tab for test navigation.
+const owned=await evaluate(controller,`chrome.tabs.create({windowId:${session.windowId},url:'about:blank',active:true}).then(t=>({id:t.id,incognito:t.incognito,windowId:t.windowId}))`);
+assert.equal(owned.incognito,false);assert.equal(owned.windowId,session.windowId);
+let targetId = owned.id;
+let lastRequestId;
+try {
 for (const task of cases) {
   assert.ok(/^(?:open [a-z0-9.-]+(?:\/login)?|sign in to github)$/i.test(task), 'Only public navigation and GitHub block verification are allowed.');
   let ownTask = false;
   const requestId = `text-${Date.now().toString(36)}-${(report.steps.length + 1).toString(36)}`;
+  lastRequestId=requestId;
+  const started=performance.now();
   const entry = { task, consentCount: 0 };
+  let stopAudit=false;
   try {
     assert.ok(!busy.has((await read()).status), 'Another command started; stopping audit.');
     const accepted = await evaluate(controller, `chrome.runtime.sendMessage(${JSON.stringify({ type: 'START_TASK', task, requestId, ...(targetId ? { tabId: targetId } : {}) })})`);
@@ -89,22 +103,43 @@ for (const task of cases) {
       const expected = new URL('https://' + task.slice(5));
       const actual = new URL(tab.url);
       assert.equal(actual.hostname.replace(/^www\./, ''), expected.hostname.replace(/^www\./, ''));
+      if(expected.pathname!=='/')assert.equal(actual.pathname.replace(/\/$/,''),expected.pathname);
     }
     entry.passed = true;
   } catch (error) {
     entry.passed = false;
-    entry.error = error.message;
-    const current = await read();
-    if (ownTask && current.requestId === requestId && busy.has(current.status)) {
-      await evaluate(controller, "chrome.runtime.sendMessage({type:'CANCEL_TASK'})");
-      for (let i = 0; i < 20 && busy.has((await read()).status); i++) await new Promise(resolve => setTimeout(resolve, 250));
+    entry.error = 'AUDIT_POSTCONDITION_OR_CONNECTION_FAILED';
+    const current = await read().catch(()=>null);
+    if(!current){entry.error='BROWSER_CONNECTION_UNAVAILABLE';stopAudit=true;}
+    if (ownTask && current?.requestId === requestId && busy.has(current.status)) {
+      try {
+        await evaluate(controller, "chrome.runtime.sendMessage({type:'CANCEL_TASK'})");
+        for (let i = 0; i < 20 && busy.has((await read()).status); i++) await new Promise(resolve => setTimeout(resolve, 250));
+      } catch {stopAudit=true;}
     }
-    if (current.task !== task && busy.has(current.status)) { report.steps.push(entry); break; }
+    if (current && current.task !== task && busy.has(current.status))stopAudit=true;
   }
+  entry.elapsedMs=Math.round(performance.now()-started);
   report.steps.push(entry);
+  await checkpoint();
   console.log(JSON.stringify(entry));
+  if(stopAudit)break;
+}
+} catch { report.failureClass='AUDIT_INTERRUPTED';
+} finally {
+  // If a human took over, leave their tab alone, even if their command finished.
+  try {
+    const current=await read();
+    if(current.requestId===lastRequestId&&!busy.has(current.status))await evaluate(controller,
+      `chrome.tabs.get(${owned.id}).then(t=>!t.incognito&&t.windowId===${session.windowId}?chrome.tabs.remove(t.id):false)`);
+  } catch {}
 }
 report.passed = report.steps.length === cases.length && report.steps.every(step => step.passed);
-await mkdir(new URL('../runtime/', import.meta.url), { recursive: true });
-await writeFile(new URL(coverage ? '../runtime/website-coverage.json' : '../runtime/live-flow-audit.json', import.meta.url), JSON.stringify(report, null, 2));
+report.summary={declared:cases.length,attempted:report.steps.length,
+  navigationCompleted:report.steps.filter(s=>s.passed&&s.task.startsWith('open ')).length,
+  expectedCredentialHandoffs:report.steps.filter(s=>s.passed&&s.task==='sign in to github').length,
+  failedOrUnattempted:cases.length-report.steps.filter(s=>s.passed).length,
+  allAttemptTimings:summarize(report.steps.map(s=>s.elapsedMs))};
+report.finishedAt=new Date().toISOString();
+await checkpoint();
 process.exitCode = report.passed ? 0 : 1;

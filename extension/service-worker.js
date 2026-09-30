@@ -438,9 +438,12 @@ async function resolveTarget(tabId, controllerWindowId) {
     const legacyKey = `captainTarget:${tabId}`;
     const legacyBinding = tabId ? (await chrome.storage.session.get(legacyKey))[legacyKey] : null;
     const selected = windowBinding || legacyBinding;
-    const selectedId = selected?.tabId || tabId;
     let tab;
-    if (selectedId) { try { tab = await chrome.tabs.get(selectedId); } catch { /* Closed target: recover inside the controller's window. */ } }
+    // A command from an in-page panel or an explicit controller target belongs
+    // to THAT tab. A previous window binding must never silently override it.
+    if (tabId) { try { tab = await chrome.tabs.get(tabId); } catch { /* Closed explicit target: use the established recovery path. */ } }
+    const selectedId = selected?.tabId || tabId;
+    if (!tab && selectedId) { try { tab = await chrome.tabs.get(selectedId); } catch { /* Closed target: recover inside the controller's window. */ } }
     if (tab && (tab.incognito || tab.windowId !== controllerWindowId)) throw new Error('The working tab moved to another window. Open CAPTAIN from a website tab in this normal window to reconnect.');
     if (tab?.url?.startsWith(chrome.runtime.getURL(''))) tab = null;
     if (!tab) {

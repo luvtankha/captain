@@ -4,15 +4,17 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { cdp, debugJson, evaluate, extensionPath, findSession } from './reload-in-place.mjs';
 import { matchControls, matchKinds, summarize, rates } from './phase-08-score.mjs';
+import {sourceFingerprint} from './evidence-provenance.mjs';
 
 const basis=JSON.parse(await readFile(new URL('../benchmarks/groundTruth.json',import.meta.url),'utf8'));
 const corpus=JSON.parse(await readFile(new URL('../benchmarks/phase-08-corpus.json',import.meta.url),'utf8'));
 const samples=Object.keys(basis.cases).map(id=>({id,variant:'base',
-  split:corpus.heldOutCaseIds.includes(id)?'held-out':'development'}))
-  .concat(corpus.variants.map(v=>({id:v.case,variant:v.variant,split:v.split})));
+  split:'previously-inspected'}))
+  .concat(corpus.variants.map(v=>({id:v.case,variant:v.variant,split:'previously-inspected'})));
 assert.equal(new Set(samples.map(s=>s.id+'/'+s.variant)).size,samples.length);
 assert.ok(samples.every(s=>basis.cases[s.id]));
-const report={schema:'captain.original-phase-08.evaluation.v1',generatedAt:new Date().toISOString(),
+const report={schema:'captain.normal-window.geometry-evaluation.v2',generatedAt:new Date().toISOString(),
+  sourceFingerprint:await sourceFingerprint(),
   status:'PARTIAL',scope:'Controlled synthetic DOM geometry/private-kind count audit; not ONNX model or pixel-mask accuracy',cases:[]};
 let ownedTab,session,controller,stage='initialization';
 const fixtureUrl=id=>`http://127.0.0.1:4317/benchmark.html?case=${id}`;
@@ -27,24 +29,16 @@ try{
   assert.ok(installed?.id,'Exact workspace extension not found.');
   session=await findSession(installed.id);assert.ok(session?.controller&&Number.isSafeInteger(session.windowId));
   controller=session.controller;
-  stage='private-window-preflight';
+  stage='normal-window-preflight';
   const preflight=await evaluate(controller,`(async()=>{const me=await chrome.tabs.getCurrent();
-    const tabs=await chrome.tabs.query({windowId:me.windowId});return {incognito:me.incognito,
-    windowId:me.windowId,tabs:tabs.map(t=>({incognito:t.incognito,url:t.url}))};})()`);
-  assert.equal(preflight.incognito,true);assert.equal(preflight.windowId,session.windowId);
-  const permitted=new Set([...Object.keys(basis.cases).map(fixtureUrl),
-    'http://127.0.0.1:4317/visual-fixture.html',
-    'http://127.0.0.1:4317/privacy-fixture.html',
-    'http://127.0.0.1:4317/demo.html',
-    'http://127.0.0.1:4317/demo.html?q=laptop']);
-  assert.ok(preflight.tabs.every(t=>t.incognito&&
-    (t.url==='about:blank'||permitted.has(t.url)||
-      t.url?.startsWith(`chrome-extension://${installed.id}/`))),
-    'Unreviewed tab in private window; no benchmark navigation sent.');
+    return {incognito:me.incognito,windowId:me.windowId};})()`);
+  assert.equal(preflight.incognito,false);assert.equal(preflight.windowId,session.windowId);
+  const state=await evaluate(controller,`chrome.runtime.sendMessage({type:'GET_STATE'}).then(s=>({status:s.status}))`);
+  assert.ok(!['running','waiting_privacy_consent','waiting_human'].includes(state.status),'Do not interrupt an active task.');
   stage='create-owned-tab';
   ownedTab=await evaluate(controller,`chrome.tabs.create({windowId:${session.windowId},
     url:'about:blank',active:true}).then(t=>({id:t.id,incognito:t.incognito,windowId:t.windowId}))`);
-  assert.equal(ownedTab.incognito,true);assert.equal(ownedTab.windowId,session.windowId);
+  assert.equal(ownedTab.incognito,false);assert.equal(ownedTab.windowId,session.windowId);
   for(const sample of samples){
     stage='fixture-navigation';
     const start=performance.now(),url=fixtureUrl(sample.id);
@@ -52,7 +46,7 @@ try{
     let ready=false;
     for(let i=0;i<50;i++){
       try{ready=await evaluate(controller,`(async()=>{const t=await chrome.tabs.get(${ownedTab.id});
-        return t.incognito&&t.windowId===${session.windowId}&&t.url===${JSON.stringify(url)}&&
+        return !t.incognito&&t.windowId===${session.windowId}&&t.url===${JSON.stringify(url)}&&
           t.status==='complete'&&!t.pendingUrl&&
           (await chrome.tabs.sendMessage(t.id,{type:'READINESS'}))?.ready===true;})()`);}catch{}
       if(ready)break;await new Promise(r=>setTimeout(r,100));
@@ -117,8 +111,7 @@ try{
     if(c[key])for(const name of ['tp','fp','fn'])s[name]+=c[key][name];return s;},{tp:0,fp:0,fn:0});
   report.summary={total:report.cases.length,passed:report.cases.filter(c=>c.passed).length,
     failed:report.cases.filter(c=>!c.passed).length,
-    heldOutTotal:report.cases.filter(c=>c.split==='held-out').length,
-    heldOutPassed:report.cases.filter(c=>c.split==='held-out'&&c.passed).length,
+    independentHeldOut:false,
     geometry:rates(sum('geometry')),privateKindCountAgreement:rates(sum('privateKindCount')),
     observationRoundTrip:summarize(report.cases.map(c=>c.timing.observationRoundTripMs)),
     dom:summarize(report.cases.map(c=>c.timing.domMs).filter(Number.isFinite)),
@@ -130,9 +123,10 @@ try{
   process.exitCode=1;
 }finally{
   if(controller&&ownedTab?.id)try{await evaluate(controller,`chrome.tabs.get(${ownedTab.id}).then(t=>
-    t.incognito&&t.windowId===${session.windowId}&&
+    !t.incognito&&t.windowId===${session.windowId}&&
     (t.url==='about:blank'||t.url?.startsWith('http://127.0.0.1:4317/benchmark.html?case='))
       ?chrome.tabs.remove(t.id):false)`);}catch{}
   await mkdir(new URL('../runtime/',import.meta.url),{recursive:true});
-  await writeFile(new URL('../runtime/phase-08-evaluation.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+  await writeFile(new URL('../runtime/normal-geometry-evaluation.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
 }
+if(report.status!=='CONTROLLED_CORPUS_PASSED')process.exitCode=1;

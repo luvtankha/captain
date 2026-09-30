@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cdp, debugJson, ensureController, evaluate, extensionPath, findSession, reconnectPanels, reloadInPlace } from './reload-in-place.mjs';
 import { ensureCompanionAuthToken, ensureServerRuntime } from './server-runtime.mjs';
+import { configuredOllama, ensureOptionalOllama } from './optional-ollama.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -54,12 +55,15 @@ let browser;
 for (const candidate of chromeCandidates) if (await exists(candidate)) { browser = candidate; break; }
 if (!browser) throw new Error('Chrome or Edge was not found.');
 
-try { await fetch('http://127.0.0.1:11434/api/tags', { signal: AbortSignal.timeout(2000) }); }
-catch {
+const localEnv = await readFile(join(root, '.env'), 'utf8').catch(error => {
+  if (error.code === 'ENOENT') return '';
+  throw error;
+});
+await ensureOptionalOllama({enabled: configuredOllama(process.env, localEnv), spawnService: async () => {
   const ollama = spawn('ollama', ['serve'], { detached: true, stdio: 'ignore', windowsHide: true });
   ollama.on('error', error => console.error(`Optional Ollama service could not start: ${error.message}`));
   ollama.unref();
-}
+}});
 const companionToken = await ensureCompanionAuthToken(root);
 const serverRuntime = await ensureServerRuntime(root, { authToken: companionToken });
 console.log(`CAPTAIN server ${serverRuntime.version} ${serverRuntime.fingerprint.slice(0, 12)}${serverRuntime.restarted ? ' updated' : ' ready'}.`);

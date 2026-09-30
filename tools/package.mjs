@@ -139,7 +139,8 @@ await rm(join(dist, 'chrome', 'controls', 'experiments'), { recursive: true, for
 for (const name of [
   'phase-06-live.html', 'phase-06-live-worker.js', 'phase-06-live-ocr-worker.js',
   'text/phase06-debug-runtime.js', 'text/phase06-debug-bootstrap.js',
-  'controls/ui-shape.js'
+  'controls/ui-shape.js',
+  'readiness-vision-worker.js', 'readiness-ocr-worker.js', 'readiness-metrics.js'
 ]) await rm(join(dist, 'chrome', name), { force: true });
 const chromeManifest = JSON.parse(await readFile(join(dist, 'chrome', 'manifest.json'), 'utf8'));
 if (chromeManifest.content_scripts?.[0]?.js?.join(',') !== 'privacy/privacy-core.js,content-script.js') throw new Error('Content-script privacy core must load first.');

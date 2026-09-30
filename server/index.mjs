@@ -1,6 +1,7 @@
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
+import { parseEnv } from "node:util";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { payloadLeaks } from "./privacy.mjs";
@@ -22,10 +23,8 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const runtime = expectedServerRuntime(root);
 let activeRequests = 0;
 try {
-  for (const line of readFileSync(join(root, ".env"), "utf8").split(/\r?\n/)) {
-    const match = line.match(/^\s*([^#=]+)=(.*)$/);
-    if (match && process.env[match[1].trim()] === undefined)
-      process.env[match[1].trim()] = match[2].trim();
+  for (const [name, value] of Object.entries(parseEnv(readFileSync(join(root, ".env"), "utf8")))) {
+    if (process.env[name] === undefined) process.env[name] = value;
   }
 } catch {}
 const port = Number(process.env.CAPTAIN_PORT || 4317);

@@ -158,17 +158,21 @@ export function adapter({ bytes = model, missing = false, runtime = ort, researc
 
 const p = (percentile, values) => [...values].sort((a, b) => a - b)[Math.ceil(values.length * percentile / 100) - 1];
 export async function benchmark(iterations = 5, screenshot = syntheticRaster(), sourceLabel = 'generated 640x640 non-personal UI raster') {
+  if(!Number.isSafeInteger(iterations)||iterations<1||iterations>100)throw Error('Choose 1–100 benchmark iterations.');
   if (createHash('sha256').update(model).digest('hex') !== EXPECTED_SHA) throw new Error('Unverified checkpoint.');
   ort.env.wasm.numThreads = 1; ort.env.wasm.simd = true;
   const { detector, runs } = adapter();
   const warmup = performance.now();
   const first = await detector.detect(screenshot, screenshot.width, screenshot.height, lease);
   const firstMs = performance.now() - warmup;
-  const times = [], memory = [];
+  const times = [], memory = [], cpuSamples = [];
   for (let i = 0; i < iterations; i++) {
     const start = performance.now();
+    const cpuStart = process.cpuUsage();
     const result = await detector.detect(screenshot, screenshot.width, screenshot.height, lease);
     times.push(performance.now() - start);
+    const cpu = process.cpuUsage(cpuStart);
+    cpuSamples.push((cpu.user+cpu.system)/1000/times.at(-1)*100);
     memory.push(process.memoryUsage().rss);
     if (JSON.stringify(result.detections) !== JSON.stringify(first.detections)) throw new Error('Unstable real inference.');
   }
@@ -178,6 +182,8 @@ export async function benchmark(iterations = 5, screenshot = syntheticRaster(), 
     sha256: EXPECTED_SHA, bytes: model.length, iterations, actualModelRuns: runs(),
     firstRunMs: Math.round(firstMs), p50Ms: Math.round(p(50, times)), p95Ms: Math.round(p(95, times)),
     peakRssMiB: Math.round(Math.max(...memory) / 1048576), detections: first.detections.length,
+    cpuPercentOfOneCore: {mean:cpuSamples.reduce((a,b)=>a+b,0)/cpuSamples.length,
+      peakPerInference:Math.max(...cpuSamples),scope:'Node process CPU time per warm inference, not total extension/browser or whole-machine utilization'},
     boxes: first.detections.map(item => item.box),
     scope: 'Windows Node-hosted extension adapter; synthetic raster, not a browser/CSP or real-world accuracy measurement'
   };
